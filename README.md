@@ -46,14 +46,18 @@ The project assumes a **star schema** ("gold layer") with the following tables:
 | `gold.dim_customers` | Dimension | Customer attributes (customer key, customer number, first/last name, birthdate, gender, country) |
 | `gold.dim_products` | Dimension | Product attributes (product key, product name, category, subcategory, cost) |
 
-> **Note:** This README documents the schema as referenced in the SQL scripts. If a database setup script (DDL) or sample dataset is included in the repository, link it here so the project is fully reproducible by anyone who clones it.
+> Source files for these tables live in `datasets/`. If that folder contains raw CSVs rather than a DDL/schema-creation script, consider adding a short `datasets/README.md` or a `setup.sql` describing how to load them into the `gold` schema — this is what makes the project runnable by someone other than you.
 
 ---
 
 ## Repository Structure
 
 ```
-sql-data-analytics-project/
+sql_exploratory-data-analysis-project/
+│
+├── datasets/                               # Source data for the gold-layer schema (dim_customers, dim_products, fact_sales)
+│
+├── documents/                              # Supporting documentation (data dictionary, diagrams, notes)
 │
 ├── scripts/
 │   ├── exploratory_data_analysis.sql       # Database, dimension, date, and measure exploration
@@ -62,11 +66,9 @@ sql-data-analytics-project/
 │   ├── customer_segmentation.sql           # Product cost segmentation & customer value segmentation
 │   └── customer_report.sql                 # Final consolidated customer-level reporting view
 │
-├── README.md
-└── LICENSE
+├── LICENSE                                 # MIT License
+└── README.md
 ```
-
-> Adjust the folder names above to match your actual repository layout before publishing — see [Known Limitations](#known-limitations--suggested-improvements).
 
 ---
 
@@ -133,11 +135,12 @@ Consolidates all customer-level logic into a single reusable view, `gold.custome
 
 ## How to Use This Repository
 
-1. Ensure you have access to a SQL Server instance (or Azure SQL Database) with a `gold` schema containing `dim_customers`, `dim_products`, and `fact_sales`.
-2. Run `exploratory_data_analysis.sql` first to validate the schema and get familiar with the data.
-3. Run the analysis scripts in the order listed under [Analytical Modules](#analytical-modules) to reproduce each stage of the analysis.
-4. Execute `customer_report.sql` to create the `gold.customer_report` view.
+1. Load the source data in `datasets/` into a SQL Server instance (or Azure SQL Database) under a `gold` schema, producing `dim_customers`, `dim_products`, and `fact_sales`.
+2. Run `scripts/exploratory_data_analysis.sql` first to validate the schema and get familiar with the data.
+3. Run the remaining scripts in `scripts/` in the order listed under [Analytical Modules](#analytical-modules) to reproduce each stage of the analysis.
+4. Execute `scripts/customer_report.sql` to create the `gold.customer_report` view.
 5. Connect a BI tool (Power BI, Tableau, Metabase) directly to the view for dashboarding, or query it directly for ad hoc analysis.
+6. Refer to `documents/` for any supporting data dictionary or methodology notes.
 
 ---
 
@@ -161,10 +164,11 @@ In the interest of maintaining industry-standard quality, the following should b
 | Typo in age-group label (`'inder 20'`) | `customer_report.sql` | Correct to `'Under 20'` |
 | Inconsistent casing/spacing in filenames (spaces, mixed case) | Repo root | Standardize to `lower_snake_case.sql` for all files (already done for most; align the remaining two) |
 | Alias typo `avg_ordeer_value` | `customer_report.sql` | Correct to `avg_order_value` |
-| No DDL/setup script or sample dataset included | Repository | Add a `datasets/` folder with a schema-creation script (or a link to the source dataset) so the project is independently reproducible |
+| `documents/` folder currently holds only a placeholder | Repository | Populate with a data dictionary, ER diagram, or a short methodology note — an empty documented folder looks unfinished to a reviewer |
 | No inline data dictionary for view output columns | `customer_report.sql` | Add a header comment block documenting each output column, consistent with the file's own top-of-file documentation style |
 | Missing product-level equivalent to `customer_report` | Repository | Consider adding a `gold.product_report` view (revenue segment, sales trend, recency) to mirror the customer report and round out the portfolio |
-| No version control artifacts (`.gitignore`, `LICENSE`) confirmed | Repository | Add both before publishing publicly |
+| Repository has no description or topics set on GitHub | GitHub "About" panel | Add a one-line description and topics (`sql`, `data-analytics`, `sql-server`, `portfolio-project`) — this is what shows in search and on your profile, and it's currently blank |
+| No `.gitignore` confirmed | Repository | Low priority for a pure-SQL repo, but add one if any local/IDE config files get committed later |
 
 Addressing these before publishing will materially strengthen the repository's credibility to a technical reviewer or hiring manager evaluating it as portfolio evidence.
 
@@ -174,6 +178,5 @@ Addressing these before publishing will materially strengthen the repository's c
 
 **Hassan** — BBA Finance student, University of Gujrat. Building a finance-domain SQL portfolio as part of a broader path toward freelance data analysis and FinTech/AI-in-Finance roles.
 
-- LinkedIn: *[add link]*
-- Portfolio: *[add link]*
-- Email: *[add contact]*
+- LinkedIn: *www.linkedin.com/in/hassan-sharif-cheema*
+- Email: *hassansharif2132@gmail.com*
